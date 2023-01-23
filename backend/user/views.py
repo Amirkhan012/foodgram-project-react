@@ -38,7 +38,7 @@ def follow_author(request, pk):
     if request.method == 'DELETE':
         try:
             subscription = Subscribe.objects.get(user=user, author=author)
-        except ObjectDoesNotExist:
+        except Subscribe.DoesNotExist:
             content = {'errors': 'Вы не подписаны на данного автора'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         subscription.delete()
