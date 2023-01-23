@@ -58,9 +58,9 @@ class RecipeViewSet(ListRetrieveCreateUpdateDestroyMixin):
             related_manager.get(recipe_id=recipe.id).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         if related_manager.filter(recipe=recipe).exists():
-            raise Response(
-                    'Рецепт уже в избранном',
-                    status=status.HTTP_204_NO_CONTENT)
+            return Response(
+                'Рецепт уже в избранном',
+                status=status.HTTP_204_NO_CONTENT)
         related_manager.create(recipe=recipe)
         serializer = ShortRecipeSerializer(instance=recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
