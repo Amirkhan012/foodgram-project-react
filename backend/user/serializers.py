@@ -2,7 +2,9 @@ from djoser.serializers import (
     UserCreateSerializer as BaseUserRegistrationSerializer,
     UserSerializer
 )
+from drf_base64.fields import Base64ImageField
 from rest_framework import serializers, validators
+
 
 from foodgram.models import Recipe
 from user.models import User, Subscribe
@@ -60,6 +62,18 @@ class CustomUserSerializer(UserSerializer):
                                         author=obj).exists()
 
 
+class ShortRecipeSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для краткого отображения сведений о избранных рецептах.
+    """
+    image = Base64ImageField()
+
+    class Meta:
+        model = Recipe
+        fields = ("id", "name", "image",
+                  "cooking_time")
+
+
 class SubscribeSerializer(serializers.ModelSerializer):
     recipes = serializers.SerializerMethodField(read_only=True)
     recipes_count = serializers.SerializerMethodField(read_only=True)
@@ -71,8 +85,6 @@ class SubscribeSerializer(serializers.ModelSerializer):
                   'is_subscribed', 'recipes', 'recipes_count',)
 
     def get_recipes(self, obj):
-        from api.serializers import ShortRecipeSerializer
-
         request = self.context.get('request')
         limit_recipes = request.query_params.get('recipes_limit')
         if limit_recipes is not None:

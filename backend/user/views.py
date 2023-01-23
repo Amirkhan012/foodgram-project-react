@@ -1,4 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -28,7 +28,7 @@ def follow_author(request, pk):
         except IntegrityError:
             content = {'errors': 'Вы уже подписаны на данного автора'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
-        follows = User.objects.all().filter(username=author.username)
+        follows = User.objects.filter(username=author.username)
         serializer = SubscribeSerializer(
             follows,
             many=True,
@@ -39,7 +39,7 @@ def follow_author(request, pk):
     if request.method == 'DELETE':
         try:
             subscription = Subscribe.objects.get(user=user, author=author)
-        except ObjectDoesNotExist:
+        except ValidationError:
             content = {'errors': 'Вы не подписаны на данного автора'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         subscription.delete()

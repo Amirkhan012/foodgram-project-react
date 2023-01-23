@@ -10,6 +10,7 @@ class Tag(models.Model):
         'Имя тега',
         max_length=150,
         blank=False,
+        unique=True,
     )
     hexcolor = ColorField(
             format="hex",
@@ -25,17 +26,18 @@ class Tag(models.Model):
         ordering = ('name',)
 
     def __str__(self):
-        return (f'{self.name}({self.slug})')
+        return (f'{self.name}')
 
 
 class Ingredient(models.Model):
     name = models.CharField(
-        'Имя ингридиента',
+        'Имя ингредиента',
         max_length=150,
         blank=False,
+        unique=True,
     )
     measurement_unit = models.CharField(
-        'Измерение ингридиента',
+        'Измерение ингредиента',
         max_length=30,
         blank=False,
     )
@@ -51,18 +53,18 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipe',
+        related_name='recipes',
     )
     ingredients = models.ManyToManyField(
         Ingredient,
         through='IngredientsInRecipe',
-        related_name='ingredientinrecipe',
+        related_name='ingredientinrecipes',
         verbose_name='Ингредиенты'
     )
     tags = models.ManyToManyField(
         Tag,
         blank=True,
-        related_name='tags',
+        related_name='tagsinrecipes',
         verbose_name='Теги'
     )
     image = models.ImageField(

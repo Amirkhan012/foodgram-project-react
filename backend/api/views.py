@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status, mixins, permissions, viewsets
+from rest_framework import status, permissions
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from weasyprint import HTML
 
 from .filters import IngredientFilter, RecipeFilter
+from .mixins import ListRetrieveCreateUpdateDestroyMixin
 from .permissions import (IsAdminOwnerOrReadOnly,
                           IsAdminOrReadOnly)
 from .serializers import (TagSerializer, IngredientSerializer,
@@ -17,32 +17,15 @@ from .utils import get_list_ingredients
 from foodgram.models import Tag, Ingredient, Recipe
 
 
-class TagViewSet(mixins.ListModelMixin,
-                 mixins.CreateModelMixin,
-                 mixins.DestroyModelMixin,
-                 viewsets.GenericViewSet):
+class TagViewSet(ListRetrieveCreateUpdateDestroyMixin):
     """Класс для Tag объектов."""
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
 
-    def get_object(self, pk):
-        try:
-            return Tag.objects.get(pk=pk)
-        except Tag.DoesNotExist:
-            raise
 
-    def get(self, request, pk, format=None):
-        tag = self.get_object(pk)
-        serializer = TagSerializer(tag)
-        return Response(serializer.data)
-
-
-class IngredientViewSet(mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
+class IngredientViewSet(ListRetrieveCreateUpdateDestroyMixin):
     """Класс для Ingredient объектов."""
 
     queryset = Ingredient.objects.all()
@@ -51,24 +34,8 @@ class IngredientViewSet(mixins.ListModelMixin,
     filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter
 
-    def get_object(self, pk):
-        try:
-            return Ingredient.objects.get(pk=pk)
-        except Ingredient.DoesNotExist:
-            raise
 
-    def get(self, request, pk, format=None):
-        ingredient = self.get_object(pk)
-        serializer = IngredientSerializer(ingredient)
-        return Response(serializer.data)
-
-
-class RecipeViewSet(mixins.ListModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.CreateModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet):
+class RecipeViewSet(ListRetrieveCreateUpdateDestroyMixin):
     """Класс для Recipe объектов."""
 
     queryset = Recipe.objects.all()
@@ -91,7 +58,9 @@ class RecipeViewSet(mixins.ListModelMixin,
             related_manager.get(recipe_id=recipe.id).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         if related_manager.filter(recipe=recipe).exists():
-            raise ValidationError('Рецепт уже в избранном')
+            raise Response(
+                    'Рецепт уже в избранном',
+                    status=status.HTTP_204_NO_CONTENT)
         related_manager.create(recipe=recipe)
         serializer = ShortRecipeSerializer(instance=recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
