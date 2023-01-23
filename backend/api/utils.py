@@ -12,7 +12,7 @@ def get_list_ingredients(user):
         recipe__cart_recipe__user=user).values(
         name=F('ingredient__name'),
         measurement_unit=F('ingredient__measurement_unit')
-    ).annotate(amount=Sum('amount_ingredient')).values_list(
+    ).annotate(amount_ingredient=Sum('amount_ingredient')).values_list(
         'ingredient__name', 'amount_ingredient', 'ingredient__measurement_unit'
     )
     return ingredients
