@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -6,7 +9,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='#v1d6^c^e!30&ib=0*2o%v6lu3c0-2a%wy
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '62.84.123.70',
+    'yatube-sn.hopto.org',
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'testserver'
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,10 +69,10 @@ WSGI_APPLICATION = 'api_foodgram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', default='dbfoodgram'),
+        'NAME': os.getenv('POSTGRES_DB', default='dbfoodgram'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='solomon14'),
-        'HOST': 'localhost',
+        'HOST': os.getenv('DB_HOST', default='db'),
         'PORT': os.getenv('DB_PORT', default='5432')
     }
 }
@@ -117,6 +127,13 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_ID_FIELD': 'id',
+    'HIDE_USERS': False,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
+    'SEND_CONFIRMATION_EMAIL': False,
+    'SEND_ACTIVATION_EMAIL': False,
     'PERMISSIONS': {
         'user_list': ['api.permissions.IsAdminOrReadOnly'],
         'user': ['api.permissions.IsAdminOwnerOrReadOnly'],
