@@ -49,9 +49,9 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-backend:latest
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-frontend:latest
-            # sudo docker-compose down -v
-            sudo docker-compose stop
-            sudo docker-compose rm backend
+            # sudo docker compose down -v
+            sudo docker compose stop
+            sudo docker compose rm backend
             rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -60,11 +60,11 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            sudo docker-compose up -d
-            # sudo docker-compose exec -T backend python manage.py migrate
+            sudo docker compose up -d
+            # sudo docker compose exec -T backend python manage.py migrate
             # echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'pon@mail.ru', 'admin')" | sudo docker-compose exec -T backend python manage.py shell
-            # sudo docker-compose exec backend python manage.py csv_add_ingredients
-            # sudo docker-compose exec backend python manage.py collectstatic --no-input
+            # sudo docker compose exec backend python manage.py csv_add_ingredients
+            # sudo docker compose exec backend python manage.py collectstatic --no-input
             # sudo docker system prune -af
             # sudo docker volume prune -f
   send_message_success:
