@@ -40,7 +40,7 @@ services:
       - ../docs/:/usr/share/nginx/html/api/docs/
     restart: always
     depends_on:
-      - frontend
+      - backend
 
 volumes:
   static_value:
