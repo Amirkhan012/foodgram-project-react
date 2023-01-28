@@ -64,7 +64,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ("ingredients", "tags", "image",
+        fields = ('id', "ingredients", "tags", "image",
                   "author", "name", "text",
                   "cooking_time")
 
@@ -154,7 +154,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = (
-            "tags", "author", "ingredients", "is_favorited",
+            'id', "tags", "author", "ingredients", "is_favorited",
             "is_in_shopping_cart", "name", "image", "text", "cooking_time",)
 
     @staticmethod
