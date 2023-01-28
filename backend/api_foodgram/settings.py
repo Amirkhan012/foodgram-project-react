@@ -10,7 +10,11 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='#v1d6^c^e!30&ib=0*2o%v6lu3c0-2a%wy
 DEBUG = True
 
 ALLOWED_HOSTS = [
-'*'
+    '62.84.123.70',
+    'yatube-sn.hopto.org',
+    '[::1]',
+    'localhost',
+    '127.0.0.1'
 ]
 
 INSTALLED_APPS = [
@@ -68,7 +72,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='solomon14'),
-        'HOST': 'localhost',
+        'HOST': os.getenv('DB_HOST', default='db'),
         'PORT': os.getenv('DB_PORT', default='5432')
     }
 }
