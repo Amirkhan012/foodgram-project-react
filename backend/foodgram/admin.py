@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from api.forms import TagForm
 from .models import (
         Tag, Ingredient, Recipe, IngredientsInRecipe,
         Favorite, Cart)
@@ -7,9 +8,10 @@ from .models import (
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'hexcolor', 'slug',)
+    list_display = ('id', 'name', 'color', 'slug',)
     ordering = ('id',)
     search_fields = ('name',)
+    form = TagForm
 
 
 @admin.register(Ingredient)

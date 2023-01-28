@@ -14,6 +14,7 @@ from .serializers import (TagSerializer, IngredientSerializer,
                           RecipeCreateSerializer, RecipeSerializer,
                           ShortRecipeSerializer)
 from .utils import get_list_ingredients
+from foodgram.pagination import LimitPageNumberPaginator
 from foodgram.models import Tag, Ingredient, Recipe
 
 
@@ -23,6 +24,7 @@ class TagViewSet(ListRetrieveCreateUpdateDestroyMixin):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = None
 
 
 class IngredientViewSet(ListRetrieveCreateUpdateDestroyMixin):
@@ -30,6 +32,7 @@ class IngredientViewSet(ListRetrieveCreateUpdateDestroyMixin):
 
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    pagination_class = None
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter
@@ -41,6 +44,7 @@ class RecipeViewSet(ListRetrieveCreateUpdateDestroyMixin):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (IsAdminOwnerOrReadOnly,)
+    pagination_class = LimitPageNumberPaginator
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 

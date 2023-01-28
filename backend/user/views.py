@@ -6,6 +6,7 @@ from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+from foodgram.pagination import LimitPageNumberPaginator
 from .models import Subscribe, User
 from .serializers import SubscribeSerializer
 
@@ -52,6 +53,7 @@ class SubscriptionListView(viewsets.ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = SubscribeSerializer
+    pagination_class = LimitPageNumberPaginator
     filter_backends = (filters.SearchFilter,)
     permission_classes = (permissions.IsAuthenticated,)
     search_fields = ('^following__user',)

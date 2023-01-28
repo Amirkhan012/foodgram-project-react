@@ -7,14 +7,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='#v1d6^c^e!30&ib=0*2o%v6lu3c0-2a%wy6dsjl1ezq90rg!yd')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
-    '62.84.123.70',
-    'yatube-sn.hopto.org',
-    '[::1]',
-    'localhost',
-    '127.0.0.1'
+'*'
 ]
 
 INSTALLED_APPS = [
@@ -72,7 +68,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='solomon14'),
-        'HOST': os.getenv('DB_HOST', default='db'),
+        'HOST': 'localhost',
         'PORT': os.getenv('DB_PORT', default='5432')
     }
 }
@@ -93,6 +89,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -118,12 +116,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    "PAGE_SIZE": 6,
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.'
-                                'PageNumberPagination',
-    "PAGE_SIZE": 6,
 }
 
 DJOSER = {
