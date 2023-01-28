@@ -12,6 +12,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '62.84.123.70',
     'yatube-sn.hopto.org',
+    '[::1]',
     'localhost',
     '127.0.0.1'
 ]
