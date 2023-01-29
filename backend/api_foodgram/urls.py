@@ -10,7 +10,7 @@ urlpatterns = [
     path('api/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
     path(
-        'redoc/',
+        'api/docs/redoc/',
         TemplateView.as_view(template_name='redoc.html'),
         name='redoc'
     ),
