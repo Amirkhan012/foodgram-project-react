@@ -42,16 +42,19 @@ class RecipeViewSet(ListRetrieveCreateUpdateDestroyMixin):
     """Класс для Recipe объектов."""
 
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    serializer_classes = {
+        'retrieve': RecipeSerializer,
+        'list': RecipeSerializer,
+    }
+    default_serializer_class = RecipeCreateSerializer
     permission_classes = (IsAdminOwnerOrReadOnly,)
     pagination_class = LimitPageNumberPaginator
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
 
     def get_serializer_class(self):
-        if self.request.method in ('POST', 'PATCH',):
-            return RecipeCreateSerializer
-        return RecipeSerializer
+        return self.serializer_classes.get(self.action,
+                                           self.default_serializer_class)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
