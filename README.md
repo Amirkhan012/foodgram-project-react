@@ -10,6 +10,9 @@
 ## Ссылка на развернутый проект
 http://62.84.123.70/
 
+### Ссылка на redoc
+http://62.84.123.70/api/docs/redoc.html
+
 ### ADMIN
 login - pon@mail.ru
 password - admin
