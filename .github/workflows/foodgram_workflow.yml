@@ -64,10 +64,10 @@ jobs:
             sudo docker compose exec -T backend python manage.py makemigrations
             sudo docker compose exec -T backend python manage.py migrate
             echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'pon@mail.ru', 'admin')" | sudo docker compose exec -T backend python manage.py shell
-            sudo docker compose exec backend python manage.py csv_add_ingredients
             sudo docker compose exec backend python manage.py collectstatic --no-input
             sudo docker system prune -af
             sudo docker volume prune -f
+            sudo docker compose exec backend python manage.py csv_add_ingredients
   send_message_success:
     runs-on: ubuntu-latest
     needs: deploy
